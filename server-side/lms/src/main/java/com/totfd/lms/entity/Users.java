@@ -1,12 +1,10 @@
 package com.totfd.lms.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,13 +27,30 @@ public class Users {
     @Column(name = "oauth_id")
     private String oauthId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
+    @Column(name = "given_name")
+    private String givenName;
+
+    @Column(name = "family_name")
+    private String familyName;
+
+    @Column(name = "picture_url", columnDefinition = "TEXT")
+    private String pictureUrl;
+
+    @Column(name = "locale")
+    private String locale;
+
+    @Column(name = "password")
+    private String password;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @Column(name = "enabled")
+    private boolean enabled = false;
+
+    @Column(name = "verification_token")
+    private String verificationToken;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -45,4 +60,3 @@ public class Users {
         createdAt = LocalDateTime.now();
     }
 }
-
